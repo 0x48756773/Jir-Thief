@@ -80,7 +80,16 @@ def searchKeyWords(path, username, access_token, cURL, search_workers=3):
                     response.status_code, term, response.text[:200]))
                 break
 
-            jsonResp = response.json()
+            if not response.text.strip():
+                print("[!] Empty response body for term '%s' (page %d) — skipping page" % (term, page))
+                break
+
+            try:
+                jsonResp = response.json()
+            except Exception as e:
+                print("[!] Failed to parse response for term '%s' (page %d): %s" % (term, page, str(e)))
+                break
+
             issues = jsonResp.get('issues', [])
 
             if not issues:
@@ -103,7 +112,12 @@ def searchKeyWords(path, username, access_token, cURL, search_workers=3):
         futures = {executor.submit(fetch_term, term): term for term in terms}
 
         for future in as_completed(futures):
-            term, keys = future.result()
+            try:
+                term, keys = future.result()
+            except Exception as e:
+                term = futures[future]
+                keys = set()
+                print("[!] Search failed for term '%s': %s" % (term, str(e)))
             completed += 1
             with lock:
                 before = len(issueSet)
