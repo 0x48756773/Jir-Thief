@@ -26,18 +26,59 @@ search_headers = {
 }
 
 
+RESUME_FILE = 'search_resume.json'
+
+def load_search_resume():
+    """Load previously saved search state. Returns (completed_terms, saved_keys)."""
+    if not os.path.exists(RESUME_FILE):
+        return set(), set()
+    try:
+        with open(RESUME_FILE, 'r') as f:
+            state = json.load(f)
+        completed_terms = set(state.get('completed_terms', []))
+        saved_keys = set(state.get('issue_keys', []))
+        print('[*] Resume file found: %d terms already completed, %d keys loaded' % (
+            len(completed_terms), len(saved_keys)))
+        return completed_terms, saved_keys
+    except Exception as e:
+        print('[!] Could not read resume file (%s) — starting fresh' % str(e))
+        return set(), set()
+
+def save_search_resume(completed_terms, issue_keys):
+    """Atomically write search state to disk."""
+    tmp = RESUME_FILE + '.tmp'
+    try:
+        with open(tmp, 'w') as f:
+            json.dump({
+                'completed_terms': list(completed_terms),
+                'issue_keys': list(issue_keys),
+            }, f)
+        os.replace(tmp, RESUME_FILE)
+    except Exception as e:
+        print('[!] Could not save resume state: %s' % str(e))
+
 def searchKeyWords(path, username, access_token, cURL, search_workers=3):
     SEARCH_URL = cURL + '/rest/api/3/search/jql'
 
     try:
         with open(path, "r") as f:
-            terms = [line.strip() for line in f
-                     if line.strip() and not line.strip().startswith('#')]
+            all_terms = [line.strip() for line in f
+                         if line.strip() and not line.strip().startswith('#')]
     except Exception as e:
         print('[*] An error occurred opening the dictionary file: %s' % str(e))
         sys.exit(2)
 
-    print("[*] Searching %d terms with %d thread(s)" % (len(terms), search_workers))
+    # Resume: skip terms already completed in a previous run
+    completed_terms, saved_keys = load_search_resume()
+    if saved_keys:
+        issueSet.update(saved_keys)
+
+    terms = [t for t in all_terms if t not in completed_terms]
+    skipped = len(all_terms) - len(terms)
+    if skipped:
+        print('[*] Skipping %d already-searched term(s)' % skipped)
+
+    print("[*] Searching %d term(s) with %d thread(s)" % (len(terms), search_workers))
 
     lock = threading.Lock()
 
@@ -81,7 +122,7 @@ def searchKeyWords(path, username, access_token, cURL, search_workers=3):
                 break
 
             if not response.text.strip():
-                print("[!] Empty response body for term '%s' (page %d) — skipping page" % (term, page))
+                print("[!] Empty response body for term '%s' (page %d) — skipping" % (term, page))
                 break
 
             try:
@@ -119,10 +160,13 @@ def searchKeyWords(path, username, access_token, cURL, search_workers=3):
                 keys = set()
                 print("[!] Search failed for term '%s': %s" % (term, str(e)))
             completed += 1
+
             with lock:
                 before = len(issueSet)
                 issueSet.update(keys)
                 added = len(issueSet) - before
+                completed_terms.add(term)
+                save_search_resume(completed_terms, issueSet)
 
             if added:
                 print("[*] (%d/%d) %d unique issues added for term: %s" % (
@@ -131,6 +175,11 @@ def searchKeyWords(path, username, access_token, cURL, search_workers=3):
                 print("[*] (%d/%d) No new issues for term: %s" % (completed, len(terms), term))
 
     print("[*] Compiled set of %d unique issues to download" % len(issueSet))
+
+    # All terms done — clean up resume file
+    if os.path.exists(RESUME_FILE):
+        os.remove(RESUME_FILE)
+        print("[*] Search complete — resume file cleared")
 
 
 def downloadContent(username, access_token, cURL, initial_workers=5, min_workers=1, max_retries=3):
