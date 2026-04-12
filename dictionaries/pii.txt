@@ -1,0 +1,337 @@
+# PII keyword dictionary for Jir-Thief
+# Searches Jira issues for content referencing personally identifiable information.
+# Categories: identity, financial, contact, credentials, health, government IDs, HR/employment
+
+# -----------------------------------------------------------------------
+# Personal Identifiers
+# -----------------------------------------------------------------------
+social security
+social security number
+SSN
+date of birth
+date_of_birth
+dateofbirth
+DOB
+birth date
+birthdate
+full name
+first name
+last name
+middle name
+maiden name
+mother's maiden name
+nationality
+place of birth
+
+# -----------------------------------------------------------------------
+# Government-Issued IDs
+# -----------------------------------------------------------------------
+passport number
+passport no
+drivers license
+driver's license
+driver license number
+DL number
+national ID
+national identity
+national insurance number
+NIN
+NINO
+tax ID
+tax identification
+TIN
+EIN
+employer identification
+ITIN
+individual taxpayer
+visa number
+green card
+permanent resident
+resident alien
+immigration number
+
+# -----------------------------------------------------------------------
+# Financial
+# -----------------------------------------------------------------------
+credit card
+credit card number
+card number
+debit card
+card holder
+cardholder name
+CVV
+CVC
+expiry date
+expiration date
+card expiry
+bank account
+bank account number
+account number
+routing number
+IBAN
+SWIFT
+BIC
+sort code
+BSB number
+ABA number
+wire transfer
+ACH
+payment details
+billing details
+billing address
+financial statement
+tax return
+W-2
+W2
+1099
+paystub
+pay stub
+salary
+payroll
+compensation
+
+# -----------------------------------------------------------------------
+# Contact & Location
+# -----------------------------------------------------------------------
+home address
+mailing address
+residential address
+street address
+zip code
+postal code
+postcode
+phone number
+mobile number
+cell phone
+telephone
+fax number
+personal email
+home email
+email address
+IP address
+geolocation
+GPS coordinates
+latitude longitude
+
+# -----------------------------------------------------------------------
+# Authentication & Credentials
+# -----------------------------------------------------------------------
+password
+passwd
+passphrase
+PIN number
+pin code
+security question
+security answer
+secret question
+mother maiden
+memorable word
+one-time password
+OTP
+two-factor
+2FA
+recovery code
+backup code
+
+# -----------------------------------------------------------------------
+# Health & Medical (PHI / HIPAA)
+# -----------------------------------------------------------------------
+medical record
+medical record number
+MRN
+patient ID
+patient name
+patient data
+diagnosis
+medical condition
+prescription
+health insurance
+health plan
+insurance ID
+insurance number
+member ID
+Medicare
+Medicaid
+NPI
+HIPAA
+PHI
+treatment history
+clinical data
+lab result
+blood type
+biometric
+
+# -----------------------------------------------------------------------
+# Biometrics & Physical
+# -----------------------------------------------------------------------
+fingerprint
+facial recognition
+retina scan
+iris scan
+DNA
+voiceprint
+height weight
+physical description
+
+# -----------------------------------------------------------------------
+# HR / Employment
+# -----------------------------------------------------------------------
+employee ID
+employee number
+personnel file
+HR record
+background check
+employment history
+termination
+performance review
+disciplinary
+grievance
+union membership
+disability
+accommodation
+FMLA
+leave of absence
+I-9
+W-4
+W4
+direct deposit
+bank details
+emergency contact
+
+# -----------------------------------------------------------------------
+# Children / Education (COPPA / FERPA)
+# -----------------------------------------------------------------------
+student ID
+student record
+FERPA
+minor
+date of birth under
+parental consent
+guardian
+
+# -----------------------------------------------------------------------
+# Legal & Regulatory
+# -----------------------------------------------------------------------
+PII
+personally identifiable
+personal data
+GDPR
+CCPA
+data subject
+data subject request
+DSR
+right to erasure
+right to access
+sensitive data
+confidential information
+non-disclosure
+NDA
+privacy policy violation
+
+# -----------------------------------------------------------------------
+# Canadian PII (PIPEDA)
+# -----------------------------------------------------------------------
+
+# Identity & Government IDs
+social insurance number
+social insurance
+SIN number
+SIN:
+Canadian passport
+Canadian citizenship
+citizenship card
+certificate of citizenship
+permanent resident card
+PR card
+immigration record
+nexus card
+NEXUS number
+provincial ID
+provincial health card
+health card number
+
+# Provincial Health Cards
+OHIP
+OHIP number
+OHIP card
+BC Services Card
+MSP number
+Alberta health card
+AHCIP
+Manitoba health card
+Saskatchewan health card
+Nova Scotia health card
+New Brunswick health card
+PEI health card
+Newfoundland health card
+Yukon health care
+NWT health care
+
+# Tax & Financial (CRA)
+CRA
+Canada Revenue Agency
+business number
+BN:
+T4
+T4A
+T1 General
+NOA
+notice of assessment
+GST number
+HST number
+PST number
+QST number
+SIN on file
+RRSP
+TFSA
+RESP
+CPP
+EI number
+employment insurance
+
+# Banking (Canadian)
+transit number
+institution number
+Canadian bank account
+Interac
+void cheque
+cheque number
+
+# Contact & Location
+postal code
+province
+territory
+
+# Privacy Law
+PIPEDA
+CASL
+privacy breach
+privacy commissioner
+OPC
+personal information
+consent form
+privacy notice
+
+# Common Canadian Form Field Labels
+SIN:
+Health Card #:
+Province:
+Postal Code:
+
+# -----------------------------------------------------------------------
+# Common Form Field Labels (as they appear in pasted ticket content)
+# -----------------------------------------------------------------------
+First Name:
+Last Name:
+Full Name:
+Email:
+Phone:
+Address:
+City:
+State:
+Zip:
+Country:
+DOB:
+SSN:
+Account #:
+Card #:
